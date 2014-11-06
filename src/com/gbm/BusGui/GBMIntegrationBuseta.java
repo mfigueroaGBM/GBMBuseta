@@ -229,18 +229,24 @@ private void redirectSystemStreams() {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         ServiceLoader sl = new ServiceLoader();
-        File service = null;
+        File folder = null;
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setDialogTitle("List of Classes names");
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
 
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
                 System.out.println("Selected file: " + chooser.getSelectedFile());
-                service = chooser.getSelectedFile();
-                sl.addSoftwareLibrary(service);
+                folder = chooser.getSelectedFile();
+                File[] listOfFiles = folder.listFiles();
+                for (File serviceJAR : listOfFiles) {
+            if (serviceJAR.isFile()) {
+                System.out.println("Loaded file: "+serviceJAR.getName());
+                sl.addSoftwareLibrary(serviceJAR);
+            }
+        }
             } catch (Exception ex) {
                 Logger.getLogger(GBMIntegrationBuseta.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -248,8 +254,7 @@ private void redirectSystemStreams() {
         else {
         System.out.println("No Selection ");
         }
-        
-       
+          
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
